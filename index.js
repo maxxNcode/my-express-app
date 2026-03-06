@@ -6,6 +6,18 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
+
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
@@ -19,15 +31,7 @@ app.post('/submit', (req, res) => {
     res.send(`Received: ${JSON.stringify(data)}`);
 });
 
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
-});
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
 
 const items = ['Appele', 'Banane', 'Orange'];
 
